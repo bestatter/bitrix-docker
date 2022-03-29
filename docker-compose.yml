@@ -1,0 +1,75 @@
+version: "3.7"
+
+services:
+
+  nginx:
+    image: besttater/nginx:bitrix
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${PROJECT_DIR}/:${CONTAINER_PROJECT_DIR}
+    environment:
+      DOMAIN: ${DOMAIN}
+      PROJECT_DIR: ${CONTAINER_PROJECT_DIR}
+      PHP: ${CONTAINER_PHP}
+    depends_on:
+      - ${CONTAINER_PHP}
+      - nodejs
+    networks:
+      web:
+        aliases:
+          - ${DOMAIN}
+
+  php:
+    image: besttater/php:7.4.0-fpm-alpine-bitrix
+    volumes:
+      - ${PROJECT_DIR}/:${CONTAINER_PROJECT_DIR}
+    environment:
+      MAILHOG_HOST: ${MAILHOG_HOST}
+      UID: ${UID}
+      GID: ${GID}
+    networks:
+      - web
+
+  mysql:
+    image: besttater/mysql:bitrix
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - web
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/data
+    networks:
+      - web
+
+  nodejs:
+    image: besttater/bx-pull-push
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      SECURITY_KEY: ${SECURITY_KEY}
+    depends_on:
+      - ${REDIS_HOST}
+    networks:
+      - web
+
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'
+    ports:
+      - 8025:8025
+    networks:
+      - web
+
+volumes:
+  db-data:
+  redis-data:
+
+networks:
+  web:
