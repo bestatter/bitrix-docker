@@ -22,7 +22,7 @@ services:
           - ${DOMAIN}
 
   php:
-    image: besttater/php:7.4.0-fpm-alpine-bitrix
+    image: besttater/php:${PHP_VERSION}-fpm-alpine-bitrix
     volumes:
       - ${PROJECT_DIR}/:${CONTAINER_PROJECT_DIR}
     environment:
