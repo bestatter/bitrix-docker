@@ -33,7 +33,7 @@ services:
       - web
 
   mysql:
-    image: besttater/mysql:bitrix
+    image: besttater/mysql:8.0-bitrix
     volumes:
       - db-data:/var/lib/mysql
     environment:
