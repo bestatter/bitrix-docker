@@ -15,7 +15,7 @@ services:
       PHP: ${CONTAINER_PHP}
     depends_on:
       - ${CONTAINER_PHP}
-      - nodejs
+      - push
     networks:
       web:
         aliases:
@@ -49,7 +49,7 @@ services:
     networks:
       - web
 
-  nodejs:
+  push:
     image: besttater/bx-pull-push
     environment:
       REDIS_HOST: ${REDIS_HOST}
