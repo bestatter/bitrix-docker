@@ -5,8 +5,8 @@ services:
   nginx:
     image: besttater/nginx:bitrix
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     volumes:
       - ${PROJECT_DIR}/:${CONTAINER_PROJECT_DIR}
     environment:
@@ -29,6 +29,7 @@ services:
       MAILHOG_HOST: ${MAILHOG_HOST}
       UID: ${UID}
       GID: ${GID}
+    user: www-data
     networks:
       - web
 
@@ -63,7 +64,7 @@ services:
     logging:
       driver: 'none'
     ports:
-      - 8025:8025
+      - "8025:8025"
     networks:
       - web
 
